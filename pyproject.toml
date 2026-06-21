@@ -1,0 +1,9 @@
+[project]
+name = "zk-algebra-lab"
+version = "0.1.0"
+description = "Implementing the algebraic building blocks behind zero-knowledge proofs from scratch: finite fields, polynomials, and Lagrange interpolation."
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
