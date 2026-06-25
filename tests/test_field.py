@@ -82,9 +82,12 @@ def test_different_fields_cannot_be_mixed() -> None:
         a * b
 
 
-def test_modulus_must_be_prime() -> None:
+def test_modulus_must_be_greater_than_one() -> None:
     with pytest.raises(ValueError):
         FieldElement(3, 1)
 
     with pytest.raises(ValueError):
-        FieldElement(3, 15)
+        FieldElement(3, 0)
+
+    with pytest.raises(ValueError):
+        FieldElement(3, -17)
