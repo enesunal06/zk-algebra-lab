@@ -127,3 +127,90 @@ def test_polynomial_equality() -> None:
     ])
 
     assert f == g
+
+
+def test_polynomial_addition() -> None:
+    p = 17
+
+    f = Polynomial([
+        FieldElement(3, p),
+        FieldElement(2, p),
+        FieldElement(5, p),
+    ])
+
+    g = Polynomial([
+        FieldElement(4, p),
+        FieldElement(7, p),
+    ])
+
+    assert f + g == Polynomial([
+        FieldElement(7, p),
+        FieldElement(9, p),
+        FieldElement(5, p),
+    ])
+
+
+def test_polynomial_subtraction() -> None:
+    p = 17
+
+    f = Polynomial([
+        FieldElement(3, p),
+        FieldElement(2, p),
+        FieldElement(5, p),
+    ])
+
+    g = Polynomial([
+        FieldElement(4, p),
+        FieldElement(7, p),
+    ])
+
+    assert f - g == Polynomial([
+        FieldElement(16, p),
+        FieldElement(12, p),
+        FieldElement(5, p),
+    ])
+
+
+def test_polynomial_multiplication() -> None:
+    p = 17
+
+    f = Polynomial([
+        FieldElement(3, p),
+        FieldElement(2, p),
+    ])
+
+    g = Polynomial([
+        FieldElement(4, p),
+        FieldElement(5, p),
+    ])
+
+    # (3 + 2x)(4 + 5x)
+    # = 12 + 15x + 8x + 10x^2
+    # = 12 + 23x + 10x^2
+    # = 12 + 6x + 10x^2 over F_17
+    assert f * g == Polynomial([
+        FieldElement(12, p),
+        FieldElement(6, p),
+        FieldElement(10, p),
+    ])
+
+
+def test_polynomial_operations_require_same_field() -> None:
+    f = Polynomial([
+        FieldElement(1, 17),
+        FieldElement(2, 17),
+    ])
+
+    g = Polynomial([
+        FieldElement(1, 19),
+        FieldElement(2, 19),
+    ])
+
+    with pytest.raises(ValueError):
+        f + g
+
+    with pytest.raises(ValueError):
+        f - g
+
+    with pytest.raises(ValueError):
+        f * g

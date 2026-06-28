@@ -39,6 +39,51 @@ class Polynomial:
 
         return result
 
+    def _check_same_field(self, other):
+        if self.prime() != other.prime():
+            raise ValueError("cannot operate on polynomials over different fields")
+
+    def __add__(self, other):
+        self._check_same_field(other)
+
+        max_length = max(len(self.coefficients), len(other.coefficients))
+        zero = FieldElement(0, self.prime())
+        result = []
+
+        for i in range(max_length):
+            a = self.coefficients[i] if i < len(self.coefficients) else zero
+            b = other.coefficients[i] if i < len(other.coefficients) else zero
+            result.append(a + b)
+
+        return Polynomial(result)
+
+    def __sub__(self, other):
+        self._check_same_field(other)
+
+        max_length = max(len(self.coefficients), len(other.coefficients))
+        zero = FieldElement(0, self.prime())
+        result = []
+
+        for i in range(max_length):
+            a = self.coefficients[i] if i < len(self.coefficients) else zero
+            b = other.coefficients[i] if i < len(other.coefficients) else zero
+            result.append(a - b)
+
+        return Polynomial(result)
+
+    def __mul__(self, other):
+        self._check_same_field(other)
+
+        zero = FieldElement(0, self.prime())
+        result_length = self.degree() + other.degree() + 1
+        result = [zero for _ in range(result_length)]
+
+        for i, a in enumerate(self.coefficients):
+            for j, b in enumerate(other.coefficients):
+                result[i + j] = result[i + j] + (a * b)
+
+        return Polynomial(result)
+
     def __eq__(self, other):
         if not isinstance(other, Polynomial):
             return False
